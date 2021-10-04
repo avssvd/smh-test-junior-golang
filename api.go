@@ -82,10 +82,10 @@ func idCheck(strID string, paramName string) error {
 func API(env *Env) {
 	r := mux.NewRouter()
 	r.Use(queryCheckMiddleware(r))
-	r.HandleFunc("/get_users", env.users.HandlerGetUsers)
-	r.HandleFunc("/get_user", env.users.HandlerGetUser)
-	r.HandleFunc("/get_history_by_tg", env.ipChecks.HandlerGetHistory)
-	r.HandleFunc("/delete_history_record", env.ipChecks.HandlerDeleteHistoryRecord)
+	r.HandleFunc("/get_users", env.users.HandlerGetUsers).Methods(http.MethodGet)
+	r.HandleFunc("/get_user", env.users.HandlerGetUser).Methods(http.MethodGet)
+	r.HandleFunc("/get_history_by_tg", env.ipChecks.HandlerGetHistory).Methods(http.MethodGet)
+	r.HandleFunc("/delete_history_record", env.ipChecks.HandlerDeleteHistoryRecord).Methods(http.MethodDelete)
 
 	fmt.Println("starting server at :8080")
 	log.Fatal(http.ListenAndServe(":8080", r))
