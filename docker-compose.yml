@@ -1,0 +1,45 @@
+version: '3.3'
+
+services:
+
+  go:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "${API_PORT}:8080"
+    depends_on:
+      - db
+    networks:
+      smh-network:
+        ipv4_address: 10.6.0.2
+
+  db:
+    image: postgres:13.4
+    ports:
+    - "${DB_PORT}:5432"
+    volumes:
+    - ./postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_DB: "${DB_DATABASE}"
+    networks:
+      smh-network:
+        ipv4_address: 10.6.0.3
+
+
+  adminer:
+    image: adminer
+    ports:
+      - 8081:8080
+    networks:
+      smh-network:
+        ipv4_address: 10.6.0.4
+
+networks:
+  smh-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.6.0.0/24
