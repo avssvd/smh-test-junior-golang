@@ -6,7 +6,6 @@ import (
 	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"io"
 	"net/http"
 	"os"
 	"strconv"
@@ -79,10 +78,7 @@ func main() {
 	// Setup logging
 	log.SetLevel(log.ErrorLevel)
 	log.SetFormatter(&log.TextFormatter{})
-	// TODO remove after testing
-	mw := io.MultiWriter(env.errLogs, os.Stdout)
-	log.SetOutput(mw)
-	//log.SetOutput(DBctx)
+	log.SetOutput(env.errLogs)
 
 	// tg-bot up
 	go tgBot(env)
